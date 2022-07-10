@@ -1,13 +1,9 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import Nav from "../../components/nav";
 import PromoBooks from "../../components/home/promoBooks";
-import {API} from "../../config/api";
-import {useQuery} from "react-query";
 import ListBook from "../../components/home/listBook";
 
 const Landing = () => {
-
-
 
     useEffect(() => {
 

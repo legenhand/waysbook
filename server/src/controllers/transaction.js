@@ -47,7 +47,6 @@ exports.addTransaction = async (req,res) => {
                 transaction_id : newData.id
             });
             totalPrice += item.price;
-            console.log(totalPrice);
         });
 
         const buyerData = await users.findOne({

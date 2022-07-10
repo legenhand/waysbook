@@ -1,4 +1,5 @@
 import { createContext, useReducer } from 'react';
+import {useCart} from "../hooks/useCart";
 
 export const UserContext = createContext();
 
@@ -10,12 +11,13 @@ const initialState = {
 const reducer = (state, action) => {
     const { type, payload } = action;
 
+
     switch (type) {
         // add case "USER_SUCCESS" here ..
         case "USER_SUCCESS":
         case 'LOGIN_SUCCESS':
             // Set localstorage item with key "token" here ...
-            localStorage.setItem('token', payload.token)
+            localStorage.setItem('token', payload.token);
             return {
                 isLogin: true,
                 user: payload,
@@ -25,6 +27,7 @@ const reducer = (state, action) => {
         case 'LOGOUT':
             // Remove localstorage item with key "token" here ...
             localStorage.removeItem('token')
+            localStorage.removeItem('cart')
             return {
                 isLogin: false,
                 user: {},

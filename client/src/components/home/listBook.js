@@ -1,27 +1,39 @@
-import React from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Button, Col, Container, Row} from "react-bootstrap";
 import convertRupiah from "rupiah-format";
 import {useQuery} from "react-query";
 import {API} from "../../config/api";
+import {UserContext} from "../../context/userContext";
+import {Link} from "react-router-dom";
 
 const ListBook = () => {
+
+    const [state] = useContext(UserContext);
 
     let {data : books} = useQuery('BooksCache', async () => {
         const res = await API.get('/books');
         return res.data.data
     });
 
+    // Handle Add to Cart enable when logged in
+    let buttonCart;
+    if (state.isLogin){
+        buttonCart = (
+            <Button variant="dark" style={{width: "100%"}}>Add to Cart</Button>
+        );
+    }
+
     return (
         <Container>
             <Row md={5}>
-                {books?.map(item => {
-                    return <Col className="p-0">
+                {books?.map((item) => {
+                    return <Col className="p-0" key={item.id}>
                         <div className="m-4">
                             <img src={item?.thumbnail} alt="" height="250px" width="100%"/>
-                            <h4 className="fw-bolder">{item?.title}</h4>
+                            <h4 className="fw-bolder"> <Link to={`/book/${item.id}`} className="text-decoration-none text-black">{item?.title}</Link> </h4>
                             <span className="text-gray">By. {item?.author}</span>
-                            <h5 className="text-green mt-3">{convertRupiah.convert(item?.price) }</h5>
-                            {/*<Button variant="dark" style={{width: "100%"}}>Add to Cart</Button>*/}
+                            <h5 className="text-green mt-3">{convertRupiah.convert(item?.price)}</h5>
+                            {buttonCart}
                         </div>
                     </Col>
                 })}

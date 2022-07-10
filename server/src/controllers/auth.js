@@ -50,7 +50,7 @@ exports.register = async (req, res) => {
             password: hashedPassword,
             status: "customer",
         });
-        await profile.create({
+        const newProfile = await profile.create({
             gender: "",
             phone: "",
             avatar: "",
@@ -60,12 +60,18 @@ exports.register = async (req, res) => {
 
         // generate token
         const token = jwt.sign({ id: newUser.id }, process.env.TOKEN_KEY);
+        let dataProfile = JSON.parse(JSON.stringify(newProfile));
+        dataProfile = {
+            ...dataProfile,
+            avatar : process.env.PATH_FILE + dataProfile.avatar
+        }
 
         res.status(200).send({
             status: "success...",
             data: {
                 name: newUser.name,
                 email: newUser.email,
+                profile : dataProfile,
                 token,
             },
         });
@@ -102,6 +108,13 @@ exports.login = async (req, res) => {
             where: {
                 email: req.body.email,
             },
+            include: {
+                model: profile,
+                as: "profile",
+                attributes: {
+                    exclude: ["createdAt", "updatedAt"],
+                },
+            },
             attributes: {
                 exclude: ["createdAt", "updatedAt"],
             },
@@ -127,7 +140,11 @@ exports.login = async (req, res) => {
 
         // generate token
         const token = jwt.sign({ id: userExist.id }, process.env.TOKEN_KEY);
-
+        let dataProfile = JSON.parse(JSON.stringify(userExist.profile));
+        dataProfile = {
+            ...dataProfile,
+            avatar : process.env.PATH_FILE + dataProfile.avatar
+        }
         res.status(200).send({
             status: "success...",
             data: {
@@ -135,6 +152,7 @@ exports.login = async (req, res) => {
                 name: userExist.name,
                 email: userExist.email,
                 status: userExist.status,
+                profile : dataProfile,
                 token,
             },
         });
@@ -154,6 +172,12 @@ exports.checkAuth = async (req, res) => {
         const dataUser = await users.findOne({
             where: {
                 id,
+            },include: {
+                model: profile,
+                as: "profile",
+                attributes: {
+                    exclude: ["createdAt", "updatedAt"],
+                },
             },
             attributes: {
                 exclude: ["createdAt", "updatedAt", "password"],
@@ -165,7 +189,11 @@ exports.checkAuth = async (req, res) => {
                 status: "failed",
             });
         }
-
+        let dataProfile = JSON.parse(JSON.stringify(dataUser.profile));
+        dataProfile = {
+            ...dataProfile,
+            avatar : process.env.PATH_FILE + dataProfile.avatar
+        }
         res.send({
             status: "success...",
             data: {
@@ -174,6 +202,7 @@ exports.checkAuth = async (req, res) => {
                     name: dataUser.name,
                     email: dataUser.email,
                     status: dataUser.status,
+                    profile: dataProfile
                 },
             },
         });

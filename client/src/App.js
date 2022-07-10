@@ -1,11 +1,11 @@
-import {Routes, Route, useNavigate} from 'react-router-dom';
-import Nav from "./components/nav";
+import {Routes, Route} from 'react-router-dom';
 import Landing from "./pages/home/landing";
 import {useContext, useEffect} from "react";
 import {API, setAuthToken} from "./config/api";
 import {UserContext} from "./context/userContext";
+import BookDetail from "./pages/books/bookDetail";
+import Cart from "./pages/cart/cart";
 function App() {
-    let navigate = useNavigate();
     const [state, dispatch] = useContext(UserContext);
     // Init token on axios every time the app is refreshed here ...
     useEffect(() => {
@@ -13,16 +13,6 @@ function App() {
             setAuthToken(localStorage.token);
         }
 
-        // Redirect Auth
-        // if (state.isLogin === false) {
-        //     navigate('/');
-        // } else {
-        //     if (state.user.status === 'admin') {
-        //         navigate('/product');
-        //     } else if (state.user.status === 'customer') {
-        //         navigate('/');
-        //     }
-        // }
     }, [state]);
 
     const checkUser = async () => {
@@ -59,6 +49,8 @@ function App() {
     <div className="bg">
       <Routes>
           <Route path="/" element={<Landing />} />
+          <Route path="/book/:id" element={<BookDetail />} />
+          <Route path="/cart" element={<Cart/>}/>
       </Routes>
     </div>
   );

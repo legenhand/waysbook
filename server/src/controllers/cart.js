@@ -7,6 +7,7 @@ exports.addItemToCart = async (req, res) => {
                 user_id : req.user.id
             }
         });
+
         if(!isCart){
             isCart = await cart.create({
                 ...req.body,
@@ -36,7 +37,7 @@ exports.addItemToCart = async (req, res) => {
 
 exports.getAllItemCarts = async (req,res) => {
     try {
-        const data = await cart.findAll({
+        let data = await cart.findAll({
             include: [
                 {
                     model: books,
@@ -58,6 +59,23 @@ exports.getAllItemCarts = async (req,res) => {
                 user_id : req.user.id
             }
         })
+        data = JSON.parse(JSON.stringify(data));
+        let totalPrice = 0;
+        data = data.map(item => {
+            return {
+                ...item,
+                books : item.books.map(itembooks => {
+                    totalPrice += itembooks.price;
+                    return {
+                        ...itembooks,
+                        book_attachment: process.env.PATH_FILE + itembooks.book_attachment,
+                        thumbnail: process.env.PATH_FILE + itembooks.thumbnail
+                    };
+                }),
+                totalPrice : totalPrice
+            }
+        });
+
         res.send({
             status: "success...",
             data: data,
@@ -76,7 +94,7 @@ exports.deleteCart = async (req,res) => {
         const { id } = req.params;
         await cart_item.destroy({
             where: {
-                id
+                book_id : id
             }
         });
         res.send({

@@ -1,4 +1,4 @@
-const {books} = require("../../models");
+const {books, cart_item, transaction_item} = require("../../models");
 exports.addBook = async (req, res) => {
     try {
         const newBook = await books.create({
@@ -166,6 +166,19 @@ exports.updateBook = async (req,res) => {
 exports.deleteBook = async (req,res) => {
     try {
         const { id } = req.params;
+
+        await cart_item.destroy({
+            where : {
+                book_id : id
+            }
+        })
+
+        await transaction_item.destroy({
+            where : {
+                book_id : id
+            }
+        })
+
         await books.destroy({
             where: {
                 id

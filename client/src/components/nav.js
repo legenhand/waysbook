@@ -1,11 +1,15 @@
-import React, {useContext, useEffect, useState} from 'react';
-import {Alert, Button, Container, Form, Modal, Navbar} from "react-bootstrap";
-import {useNavigate} from 'react-router-dom';
+import React, {useContext, useState} from 'react';
+import {Alert, Button, Container, Dropdown, Form, Modal, Navbar} from "react-bootstrap";
+import {Link, useNavigate} from 'react-router-dom';
 import logo from "../assets/logo.png";
 import {UserContext} from "../context/userContext";
-import {useMutation} from "react-query";
+import {useMutation, useQuery} from "react-query";
 import {API} from "../config/api";
-import avatarImg from "../assets/avatar.jpg";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faCartShopping, faRightFromBracket} from "@fortawesome/free-solid-svg-icons";
+import {faCommentDots, faUser} from "@fortawesome/free-regular-svg-icons";
+import avatarImg from '../assets/avatar.jpg';
+import {useCart} from "../hooks/useCart";
 
 const Nav = () => {
     // Modal handler
@@ -16,6 +20,7 @@ const Nav = () => {
     const handleShowLogin = () => setShowLogin(true);
     const handleCloseRegister = () => setShowRegister(false);
     const handleShowRegister = () => setShowRegister(true);
+
 
     // Login and Register handler
     const [state, dispatch] = useContext(UserContext);
@@ -62,6 +67,12 @@ const Nav = () => {
             } else if(userStatus == 'admin' ){
                 navigate('/complain-admin')
             }
+
+
+            await API.get('/carts').then(res => {
+                localStorage.setItem('cart', JSON.stringify(res.data.data[0].books));
+            });
+
             setMessage(null);
             setShowLogin(false);
         } catch (error) {
@@ -75,12 +86,79 @@ const Nav = () => {
         }
     });
 
+    // register
+    const initialValuesRegister = {
+        email : '',
+        password : '',
+        name: ''
+    }
+    const [dataRegister, setDataRegister] = useState(initialValuesRegister);
+    function handleChangeRegister(event) {
+        const {name, value} = event.target;
+        setDataRegister({
+            ...dataRegister,
+            [name]: value,
+        });
+        console.log(dataRegister)
+    }
+
+    const handleSubmitRegister = useMutation(async (e) => {
+        try {
+            e.preventDefault();
+
+            // Configuration Content-type
+            const config = {
+                headers: {
+                    'Content-type': 'application/json',
+                },
+            };
+
+            // Data body => Convert Object to String
+            // Insert data user to database
+
+            const body = JSON.stringify(dataRegister);
+            await API.post('/register', body, config);
+
+            setMessage(null);
+            setShowRegister(false);
+            setShowLogin(true);
+        } catch (error) {
+            const alert = (
+                <Alert variant="danger" className="py-1">
+                    {error.response.data.message}
+                </Alert>
+            );
+            setMessage(alert);
+            console.log(error.response.data.message);
+        }
+    });
+
+
+    const logout = () => {
+        dispatch({
+            type: "LOGOUT"
+        })
+
+    }
+
     // Handle button login show when not logged in
     let avatar;
     if (state.isLogin){
             avatar = (<div>
-                <FontAwesomeIcon icon={solid('fa-cart-shopping')} />
-                <img src={avatarImg} alt="" style={{width: "50px"}} className="rounded-circle"/>
+                <Dropdown>
+
+                    <Link to="/cart" className="text-black"><FontAwesomeIcon icon={faCartShopping} style={{width: "50px", textAlign: "center", fontSize: '40px'}} className="align-middle"/></Link>
+                    <Dropdown.Toggle id="dropdown-basic" variant="none">
+                        <img src={state?.user?.profile?.avatar} alt="avatar" style={{width: "50px"}} className="rounded-circle"/>
+                    </Dropdown.Toggle>
+
+                    <Dropdown.Menu>
+                        <Dropdown.Item href="/profile"> <FontAwesomeIcon icon={faUser}/> Profile</Dropdown.Item>
+                        <Dropdown.Item href="#/action-2"><FontAwesomeIcon icon={faCommentDots}/> Complain</Dropdown.Item>
+                        <Dropdown.Divider/>
+                        <Dropdown.Item onClick={logout}><FontAwesomeIcon icon={faRightFromBracket} style={{color: "red"}} /> Logout</Dropdown.Item>
+                    </Dropdown.Menu>
+                </Dropdown>
             </div>);
     }else{
             avatar = (<div><Button variant="outline-dark" className="mx-2 py-1" style={{
@@ -93,10 +171,10 @@ const Nav = () => {
     return (
             <Navbar>
                 <Container className="my-4">
-                    <img src={logo} alt="" width="100px"/>
+                    <Link to="/"><img src={logo} alt="" width="100px"/></Link>
                     <Navbar.Toggle />
                     <Navbar.Collapse className="justify-content-end">
-                        {avatar && avatar}
+                        {avatar}
                     </Navbar.Collapse>
 
                     {/* Modal Register & Login */}
@@ -132,15 +210,15 @@ const Nav = () => {
                             <Modal.Title className="fw-bolder">Register</Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
-                            <Form>
+                            <Form onSubmit={(e) => handleSubmitRegister.mutate(e)}>
                                 <Form.Group className="mb-3">
-                                    <Form.Control type="text" placeholder="Full Name"/>
+                                    <Form.Control type="text" placeholder="Full Name" onChange={handleChangeRegister} name="name"/>
                                 </Form.Group>
                                 <Form.Group className="mb-3">
-                                    <Form.Control type="email" placeholder="Email"/>
+                                    <Form.Control type="email" placeholder="Email" onChange={handleChangeRegister} name="email"/>
                                 </Form.Group>
                                 <Form.Group className="mb-3">
-                                    <Form.Control type="password" placeholder="Password"/>
+                                    <Form.Control type="password" placeholder="Password" onChange={handleChangeRegister} name="password"/>
                                 </Form.Group>
                                 <Form.Group className="mb-3">
                                     <Button variant="dark" type="submit" style={{width : "100%"}}>Register</Button>
