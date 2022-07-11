@@ -136,8 +136,8 @@ exports.updateBook = async (req,res) => {
             ISBN: req?.body?.ISBN || data.ISBN,
             author: req?.body?.author || data.author,
             price: req?.body?.price || data.price,
-            thumbnail: req?.files?.image[0]?.filename || data.thumbnail,
-            book_attachment: req?.files?.ebook[0]?.filename || data.book_attachment,
+            thumbnail: req?.files?.image ? req?.files?.image[0]?.filename : data.thumbnail,
+            book_attachment: req?.files?.ebook ? req?.files?.ebook[0]?.filename : data.book_attachment,
             desc: req?.body.desc || data.desc,
             idUser: req?.user?.id || data.user_id,
         };

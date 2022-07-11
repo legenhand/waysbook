@@ -56,7 +56,6 @@ const EditBookForm = ({id}) => {
             let url = URL.createObjectURL(e.target.files[0]);
             setPreview(url);
         }
-        console.log(form);
     };
 
     let navigate = useNavigate();
@@ -101,7 +100,7 @@ const EditBookForm = ({id}) => {
         <Container>
 
             <Form className="mx-5" onSubmit={e => handleSubmit.mutate(e)}>
-                <h1>Add Book</h1>
+                <h1>Edit Book</h1>
                 <Form.Group className="mb-3">
                     <Form.Label>Title</Form.Label>
                     <Form.Control type="text" placeholder="Title" onChange={handleChange} name="title" defaultValue={book?.title}></Form.Control>
