@@ -144,7 +144,7 @@ exports.login = async (req, res) => {
         let dataProfile = JSON.parse(JSON.stringify(userExist.profile));
         dataProfile = {
             ...dataProfile,
-            avatar : process.env.PATH_FILE + dataProfile.avatar
+            avatar : process.env.PATH_FILE + dataProfile?.avatar
         }
         res.status(200).send({
             status: "success...",
