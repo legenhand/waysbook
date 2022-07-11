@@ -146,7 +146,7 @@ const Nav = () => {
     if (state.isLogin){
             avatar = (<div>
                 <Dropdown>
-                    {state.user.status == "customer" ? <Link to="/cart" className="text-black text-decoration-none"><FontAwesomeIcon icon={faCartShopping} style={{width: "50px", textAlign: "center", fontSize: '40px'}} className="align-middle"/>( {carts.books.length} )</Link>  : ''}
+                    {state.user.status == "customer" ? <Link to="/cart" className="text-black text-decoration-none"><FontAwesomeIcon icon={faCartShopping} style={{width: "50px", textAlign: "center", fontSize: '40px'}} className="align-middle"/>( {carts?.books?.length} )</Link>  : ''}
 
                     <Dropdown.Toggle id="dropdown-basic" variant="none">
                         <img src={state?.user?.profile?.avatar} alt="avatar" style={{width: "50px"}} className="rounded-circle"/>
