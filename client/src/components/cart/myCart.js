@@ -6,14 +6,26 @@ import {faTrash} from "@fortawesome/free-solid-svg-icons";
 import {useMutation, useQuery} from "react-query";
 import {API} from "../../config/api";
 import {useNavigate} from "react-router-dom";
+import {useCart} from "../../hooks/useCart";
 
 const MyCart = () => {
-    const {data : carts} = useQuery('listItemCartss',async ()=> {
+    const {data : carts, refetch} = useQuery('listItemCartss',async ()=> {
         const res = await API.get(`/carts`);
         return res.data.data[0]
     });
 
     const navigate = useNavigate();
+    const {removeProduct} = useCart();
+    const handleRemoveFromCart = useMutation((id) => {
+        API.delete(`/cart/${id}`).then(r => refetch()).catch(e => console.log(e));
+        removeProduct({
+            ...carts,
+            cart_item :{
+                book_id : id
+            }
+        });
+
+    })
 
     const handlePay = useMutation(async () => {
         try {
@@ -83,7 +95,10 @@ const MyCart = () => {
                                     <img src={item.thumbnail} alt="" width="100px" height="150px"/>
                                 </Col>
                                 <Col>
-                                    <h4>{item.title} <Button variant="none" className="float-end"><FontAwesomeIcon icon={faTrash}/></Button></h4>
+                                    <h4>{item.title} <Button variant="none" className="float-end" onClick={() => {
+                                        handleRemoveFromCart.mutate(item.id)
+                                    }
+                                    }><FontAwesomeIcon icon={faTrash}/></Button></h4>
                                     <span className="text-gray">By. {item.author}</span>
                                     <p className="text-green fw-bolder">{convertRupiah.convert(item.price)}</p>
                                 </Col>

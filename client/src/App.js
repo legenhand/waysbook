@@ -10,6 +10,8 @@ import ListBook from "./pages/books/listBook";
 import AddBook from "./pages/books/addBook";
 import EditBook from "./pages/books/editBook";
 import ListTransaction from "./pages/transaction/listTransaction";
+import Complain from "./pages/complain/complain";
+import ComplainAdmin from "./pages/complain/admincomplain";
 function App() {
     const [state, dispatch] = useContext(UserContext);
     // Init token on axios every time the app is refreshed here ...
@@ -61,6 +63,8 @@ function App() {
           <Route path="/transactions" element={<ListTransaction/>}/>
           <Route path="/add-book" element={<AddBook/>}/>
           <Route path="/edit-book/:id" element={<EditBook/>}/>
+          <Route path="/complain" element={<Complain />} />
+          <Route path="/complain-admin" element={<ComplainAdmin />} />
       </Routes>
     </div>
   );

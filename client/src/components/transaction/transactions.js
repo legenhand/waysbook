@@ -1,8 +1,7 @@
 import React from 'react';
-import {Button, Container, Table} from "react-bootstrap";
+import {Container, Table} from "react-bootstrap";
 import {useQuery} from "react-query";
 import {API} from "../../config/api";
-import {Link} from "react-router-dom";
 
 const Transactions = () => {
 

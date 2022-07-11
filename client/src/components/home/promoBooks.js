@@ -1,11 +1,12 @@
 import React, {useContext} from 'react';
-import {Button, Col, Container, Row} from "react-bootstrap";
+import {Col, Container, Modal, Row} from "react-bootstrap";
 import convertRupiah from "rupiah-format";
 import {useQuery} from "react-query";
 import {API} from "../../config/api";
 import {UserContext} from "../../context/userContext";
 import {Link} from "react-router-dom";
 import ButtonCart from "../buttonCart";
+import Slider from "react-slick";
 
 const PromoBooks = () => {
 
@@ -16,9 +17,36 @@ const PromoBooks = () => {
         return res.data.data
     });
 
+    const settings = {
+        centerMode: true,
+        centerPadding: '250px',
+        slidesToShow: 1,
+        responsive: [
+            {
+                breakpoint: 768,
+                settings: {
+                    arrows: false,
+                    centerMode: true,
+                    centerPadding: '40px',
+                    slidesToShow: 1
+                }
+            },
+            {
+                breakpoint: 480,
+                settings: {
+                    arrows: false,
+                    centerMode: true,
+                    centerPadding: '40px',
+                    slidesToShow: 1
+                }
+            }
+        ]
+    };
+
     return (
             <Container>
                 <Row>
+                    <Slider {...settings}>
                     {promoBooks?.map((item,key) => {
                         return <Col key={key}>
                             <Container>
@@ -39,6 +67,7 @@ const PromoBooks = () => {
                         </Col>
 
                     })}
+                    </Slider>
                 </Row>
             </Container>
     );

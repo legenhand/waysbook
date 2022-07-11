@@ -4,6 +4,8 @@ import './index.css';
 import 'font-awesome/css/font-awesome.css';
 import App from './App';
 import 'bootstrap/dist/css/bootstrap.css';
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import {QueryClient, QueryClientProvider} from "react-query";
 import {BrowserRouter} from "react-router-dom";
 import {UserContextProvider} from "./context/userContext";

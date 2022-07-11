@@ -1,5 +1,5 @@
-import React, {useContext, useEffect, useState} from 'react';
-import {Button, Col, Container, Row} from "react-bootstrap";
+import React, {useContext} from 'react';
+import {Col, Container, Row} from "react-bootstrap";
 import convertRupiah from "rupiah-format";
 import {useQuery} from "react-query";
 import {API} from "../../config/api";

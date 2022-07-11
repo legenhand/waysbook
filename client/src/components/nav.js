@@ -8,7 +8,6 @@ import {API} from "../config/api";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faBook, faCartShopping, faMoneyCheckDollar, faRightFromBracket} from "@fortawesome/free-solid-svg-icons";
 import {faCommentDots, faUser} from "@fortawesome/free-regular-svg-icons";
-import avatarImg from '../assets/avatar.jpg';
 import {useCart} from "../hooks/useCart";
 
 const Nav = () => {
@@ -20,8 +19,10 @@ const Nav = () => {
     const handleShowLogin = () => setShowLogin(true);
     const handleCloseRegister = () => setShowRegister(false);
     const handleShowRegister = () => setShowRegister(true);
-
-
+    const {data : carts} = useQuery('listItemCartssss',async ()=> {
+        const res = await API.get(`/carts`);
+        return res.data.data[0]
+    });
     // Login and Register handler
     const [state, dispatch] = useContext(UserContext);
     const initialValues = {
@@ -145,7 +146,7 @@ const Nav = () => {
     if (state.isLogin){
             avatar = (<div>
                 <Dropdown>
-                    {state.user.status == "customer" ? <Link to="/cart" className="text-black"><FontAwesomeIcon icon={faCartShopping} style={{width: "50px", textAlign: "center", fontSize: '40px'}} className="align-middle"/></Link>  : ''}
+                    {state.user.status == "customer" ? <Link to="/cart" className="text-black text-decoration-none"><FontAwesomeIcon icon={faCartShopping} style={{width: "50px", textAlign: "center", fontSize: '40px'}} className="align-middle"/>( {carts.books.length} )</Link>  : ''}
 
                     <Dropdown.Toggle id="dropdown-basic" variant="none">
                         <img src={state?.user?.profile?.avatar} alt="avatar" style={{width: "50px"}} className="rounded-circle"/>

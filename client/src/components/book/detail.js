@@ -1,11 +1,8 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React from 'react';
 import {useQuery} from "react-query";
 import {API} from "../../config/api";
-import {Button, Col, Container, Row} from "react-bootstrap";
+import { Col, Container, Row} from "react-bootstrap";
 import convertRupiah from "rupiah-format";
-import {faCartShopping} from "@fortawesome/free-solid-svg-icons";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {useCart} from "../../hooks/useCart";
 import ButtonCart from "../buttonCart";
 const Detail = (props) => {
     const id = props.id;
