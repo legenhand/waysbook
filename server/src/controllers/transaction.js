@@ -135,16 +135,19 @@ exports.getAllTransaction = async (req,res) => {
             ]
         })
         data = JSON.parse(JSON.stringify(data));
+        let totalPrice = 0;
         data = data.map(item => {
             return {
                 ...item,
                 books : item.books.map(itembooks => {
+                    totalPrice += itembooks.price;
                     return {
                         ...itembooks,
                         book_attachment: process.env.PATH_FILE + itembooks.book_attachment,
                         thumbnail: process.env.PATH_FILE + itembooks.thumbnail
                     };
-                })
+                }),
+                totalPrice : totalPrice
             }
         });
         res.send({

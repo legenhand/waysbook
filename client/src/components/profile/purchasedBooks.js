@@ -3,7 +3,7 @@ import {Button, Col, Container, Row} from "react-bootstrap";
 import {useQuery} from "react-query";
 import {API} from "../../config/api";
 
-const PurchasedBooks = (props) => {
+const PurchasedBooks = () => {
     let {data : purchasedBooks} = useQuery('purchasedBooks', async () => {
         const res = await API.get('/profile');
         return res.data.purchasedBooks

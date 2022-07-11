@@ -6,7 +6,7 @@ import {UserContext} from "../context/userContext";
 import {useMutation, useQuery} from "react-query";
 import {API} from "../config/api";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faBook, faCartShopping, faRightFromBracket} from "@fortawesome/free-solid-svg-icons";
+import {faBook, faCartShopping, faMoneyCheckDollar, faRightFromBracket} from "@fortawesome/free-solid-svg-icons";
 import {faCommentDots, faUser} from "@fortawesome/free-regular-svg-icons";
 import avatarImg from '../assets/avatar.jpg';
 import {useCart} from "../hooks/useCart";
@@ -153,9 +153,10 @@ const Nav = () => {
 
                     <Dropdown.Menu>
                         <Dropdown.Item> <Link to="/profile" className="text-black text-decoration-none"><FontAwesomeIcon icon={faUser}/> Profile</Link></Dropdown.Item>
-                        <Dropdown.Item><Link to="/complain" className="text-black text-decoration-none"><FontAwesomeIcon icon={faCommentDots}/> Complain</Link></Dropdown.Item>
+                        <Dropdown.Item><Link to={state.user.status == 'admin' ? '/complain-admin' : '/complain'} className="text-black text-decoration-none"><FontAwesomeIcon icon={faCommentDots}/> Complain</Link></Dropdown.Item>
                         <Dropdown.Divider/>
-                        {state.user.status == 'admin' ? <Dropdown.Item><Link to="/books" className="text-black text-decoration-none"><FontAwesomeIcon icon={faBook}/>List Books</Link></Dropdown.Item> : ''}
+                        {state.user.status == 'admin' ? <Dropdown.Item><Link to="/books" className="text-black text-decoration-none"><FontAwesomeIcon icon={faBook}/> List Books</Link></Dropdown.Item> : ''}
+                        {state.user.status == 'admin' ? <Dropdown.Item><Link to="/transactions" className="text-black text-decoration-none"><FontAwesomeIcon icon={faMoneyCheckDollar}/> List Transaction</Link></Dropdown.Item> : ''}
                         <Dropdown.Divider/>
                         <Dropdown.Item onClick={logout}><FontAwesomeIcon icon={faRightFromBracket} style={{color: "red"}} /> Logout</Dropdown.Item>
                     </Dropdown.Menu>
