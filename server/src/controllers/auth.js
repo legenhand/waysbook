@@ -64,7 +64,7 @@ exports.register = async (req, res) => {
         let dataProfile = JSON.parse(JSON.stringify(newProfile));
         dataProfile = {
             ...dataProfile,
-            avatar : process.env.PATH_FILE + dataProfile.avatar
+            avatar : process.env.PATH_FILE + dataProfile?.avatar
         }
 
         res.status(200).send({
@@ -193,7 +193,7 @@ exports.checkAuth = async (req, res) => {
         let dataProfile = JSON.parse(JSON.stringify(dataUser.profile));
         dataProfile = {
             ...dataProfile,
-            avatar : process.env.PATH_FILE + dataProfile.avatar
+            avatar : process.env.PATH_FILE + dataProfile?.avatar
         }
         res.send({
             status: "success...",
