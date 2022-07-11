@@ -5,6 +5,8 @@ import {API, setAuthToken} from "./config/api";
 import {UserContext} from "./context/userContext";
 import BookDetail from "./pages/books/bookDetail";
 import Cart from "./pages/cart/cart";
+import Profile from "./pages/profile/profile";
+import ListBook from "./pages/books/listBook";
 function App() {
     const [state, dispatch] = useContext(UserContext);
     // Init token on axios every time the app is refreshed here ...
@@ -51,6 +53,8 @@ function App() {
           <Route path="/" element={<Landing />} />
           <Route path="/book/:id" element={<BookDetail />} />
           <Route path="/cart" element={<Cart/>}/>
+          <Route path="/profile" element={<Profile/>}/>
+          <Route path="/books" element={<ListBook/>}/>
       </Routes>
     </div>
   );

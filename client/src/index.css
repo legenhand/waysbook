@@ -9,6 +9,14 @@ body {
 
 }
 
+h1, h2, h3, h4, h5{
+  font-family: "Noto Serif", serif;
+}
+
+.noto-serif{
+  font-family: "Noto Serif", serif;
+}
+
 .bg {
   background-image: url("assets/background.png");
   height: 100vh;
@@ -31,4 +39,8 @@ body {
   border: 0px;
   box-sizing: none;
   background-color: transparent;
+}
+
+.bg-pink {
+  background-color: #ffd9d9;
 }

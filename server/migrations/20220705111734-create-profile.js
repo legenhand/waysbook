@@ -17,6 +17,9 @@ module.exports = {
       avatar: {
         type: Sequelize.STRING
       },
+      location: {
+        type: Sequelize.STRING
+      },
       idUser: {
         type: Sequelize.INTEGER,
         references: {

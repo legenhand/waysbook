@@ -6,7 +6,7 @@ import {UserContext} from "../context/userContext";
 import {useMutation, useQuery} from "react-query";
 import {API} from "../config/api";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faCartShopping, faRightFromBracket} from "@fortawesome/free-solid-svg-icons";
+import {faBook, faCartShopping, faRightFromBracket} from "@fortawesome/free-solid-svg-icons";
 import {faCommentDots, faUser} from "@fortawesome/free-regular-svg-icons";
 import avatarImg from '../assets/avatar.jpg';
 import {useCart} from "../hooks/useCart";
@@ -65,7 +65,7 @@ const Nav = () => {
             if(userStatus == 'customer'){
                 navigate('/')
             } else if(userStatus == 'admin' ){
-                navigate('/complain-admin')
+                navigate('/books')
             }
 
 
@@ -99,7 +99,6 @@ const Nav = () => {
             ...dataRegister,
             [name]: value,
         });
-        console.log(dataRegister)
     }
 
     const handleSubmitRegister = useMutation(async (e) => {
@@ -138,7 +137,7 @@ const Nav = () => {
         dispatch({
             type: "LOGOUT"
         })
-
+        navigate('/');
     }
 
     // Handle button login show when not logged in
@@ -146,15 +145,17 @@ const Nav = () => {
     if (state.isLogin){
             avatar = (<div>
                 <Dropdown>
+                    {state.user.status == "customer" ? <Link to="/cart" className="text-black"><FontAwesomeIcon icon={faCartShopping} style={{width: "50px", textAlign: "center", fontSize: '40px'}} className="align-middle"/></Link>  : ''}
 
-                    <Link to="/cart" className="text-black"><FontAwesomeIcon icon={faCartShopping} style={{width: "50px", textAlign: "center", fontSize: '40px'}} className="align-middle"/></Link>
                     <Dropdown.Toggle id="dropdown-basic" variant="none">
                         <img src={state?.user?.profile?.avatar} alt="avatar" style={{width: "50px"}} className="rounded-circle"/>
                     </Dropdown.Toggle>
 
                     <Dropdown.Menu>
-                        <Dropdown.Item href="/profile"> <FontAwesomeIcon icon={faUser}/> Profile</Dropdown.Item>
-                        <Dropdown.Item href="#/action-2"><FontAwesomeIcon icon={faCommentDots}/> Complain</Dropdown.Item>
+                        <Dropdown.Item> <Link to="/profile" className="text-black text-decoration-none"><FontAwesomeIcon icon={faUser}/> Profile</Link></Dropdown.Item>
+                        <Dropdown.Item><Link to="/complain" className="text-black text-decoration-none"><FontAwesomeIcon icon={faCommentDots}/> Complain</Link></Dropdown.Item>
+                        <Dropdown.Divider/>
+                        {state.user.status == 'admin' ? <Dropdown.Item><Link to="/books" className="text-black text-decoration-none"><FontAwesomeIcon icon={faBook}/>List Books</Link></Dropdown.Item> : ''}
                         <Dropdown.Divider/>
                         <Dropdown.Item onClick={logout}><FontAwesomeIcon icon={faRightFromBracket} style={{color: "red"}} /> Logout</Dropdown.Item>
                     </Dropdown.Menu>
@@ -210,6 +211,7 @@ const Nav = () => {
                             <Modal.Title className="fw-bolder">Register</Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
+                            {message}
                             <Form onSubmit={(e) => handleSubmitRegister.mutate(e)}>
                                 <Form.Group className="mb-3">
                                     <Form.Control type="text" placeholder="Full Name" onChange={handleChangeRegister} name="name"/>

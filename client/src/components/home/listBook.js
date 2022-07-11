@@ -5,6 +5,7 @@ import {useQuery} from "react-query";
 import {API} from "../../config/api";
 import {UserContext} from "../../context/userContext";
 import {Link} from "react-router-dom";
+import ButtonCart from "../buttonCart";
 
 const ListBook = () => {
 
@@ -15,13 +16,6 @@ const ListBook = () => {
         return res.data.data
     });
 
-    // Handle Add to Cart enable when logged in
-    let buttonCart;
-    if (state.isLogin){
-        buttonCart = (
-            <Button variant="dark" style={{width: "100%"}}>Add to Cart</Button>
-        );
-    }
 
     return (
         <Container>
@@ -33,7 +27,7 @@ const ListBook = () => {
                             <h4 className="fw-bolder"> <Link to={`/book/${item.id}`} className="text-decoration-none text-black">{item?.title}</Link> </h4>
                             <span className="text-gray">By. {item?.author}</span>
                             <h5 className="text-green mt-3">{convertRupiah.convert(item?.price)}</h5>
-                            {buttonCart}
+                            {state.isLogin ? <ButtonCart id={item.id}/> : ''}
                         </div>
                     </Col>
                 })}

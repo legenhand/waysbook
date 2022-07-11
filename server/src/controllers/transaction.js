@@ -30,7 +30,6 @@ exports.addTransaction = async (req,res) => {
                 user_id : req.user.id
             }
         });
-        console.log(books_list)
         data = {
             id: parseInt(books_list[0].id+ Math.random().toString().slice(3, 8)),
             idBuyer: req.user.id,
@@ -136,7 +135,6 @@ exports.getAllTransaction = async (req,res) => {
             ]
         })
         data = JSON.parse(JSON.stringify(data));
-        console.log(data)
         data = data.map(item => {
             return {
                 ...item,
@@ -316,7 +314,6 @@ exports.notification = async (req,res) => {
                         res.status(200);
                     } else if (fraudStatus == "accept") {
                         await sendEmail("success", orderId);
-                        await updateProduct(orderId);
                         await updateTransaction("success", orderId);
                         res.status(200);
                     }
@@ -431,7 +428,7 @@ const sendEmail = async (status, transactionId) => {
               <body>
                 <h2>Product payment :</h2>
                 <ul style="list-style-type:none;">
-                  <li>Name : ${data.product.name}</li>
+                  <li>Name : ${data.books.title}</li>
                   <li>Total payment: ${convertRupiah.convert(data.price)}</li>
                   <li>Status : <b>${status}</b></li>
                 </ul>

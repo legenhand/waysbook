@@ -54,6 +54,7 @@ exports.register = async (req, res) => {
             gender: "",
             phone: "",
             avatar: "",
+            location: "",
             idUser: newUser.id
         });
 

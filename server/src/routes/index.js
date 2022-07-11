@@ -4,7 +4,7 @@ const {auth} = require("../middlewares/auth");
 const {uploadFile} = require("../middlewares/uploadFile");
 const {addBook, getAllBooks, getPromoBooks, getBookDetail, updateBook, deleteBook} = require("../controllers/book");
 const {addItemToCart, getAllItemCarts, deleteCart} = require("../controllers/cart");
-const {addTransaction, getAllTransaction, getTransactionByUserId, getTransaction} = require("../controllers/transaction");
+const {addTransaction, getAllTransaction, getTransactionByUserId, getTransaction, notification} = require("../controllers/transaction");
 const {getAllProfile, getProfileDetail, updateProfile} = require("../controllers/profile");
 
 const router = express.Router();
@@ -28,7 +28,7 @@ router.post("/transaction", auth, addTransaction);
 router.get("/transaction", auth, getTransactionByUserId);
 router.get("/transactions", auth, getAllTransaction);
 router.get("/transaction/:id", auth, getTransaction);
-
+router.post("/notification", notification);
 // Route Register
 router.post("/register", register);
 

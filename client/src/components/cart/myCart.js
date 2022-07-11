@@ -1,21 +1,73 @@
-import React, {useContext} from 'react';
+import React, {useEffect} from 'react';
 import {Button, Col, Container, Row} from "react-bootstrap";
-import {useCart} from "../../hooks/useCart";
-import CartContext from "../../context/cartContext";
 import convertRupiah from "rupiah-format";
-import {Link} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTrash} from "@fortawesome/free-solid-svg-icons";
-import {useQuery} from "react-query";
+import {useMutation, useQuery} from "react-query";
 import {API} from "../../config/api";
+import {useNavigate} from "react-router-dom";
 
 const MyCart = () => {
-    const { cartItems } = useCart();
     const {data : carts} = useQuery('listItemCartss',async ()=> {
         const res = await API.get(`/carts`);
         return res.data.data[0]
     });
-    console.log(carts);
+
+    const navigate = useNavigate();
+
+    const handlePay = useMutation(async () => {
+        try {
+            // Get data from product
+
+            // Insert transaction data
+            const response = await API.post("/transaction");
+            console.log(response);
+            // Create variabel for store token payment from response here ...
+            const token = response.data.payment.token;
+
+            // Init Snap for display payment page with token here ...
+            window.snap.pay(token,{
+                onSuccess: function (result) {
+                    /* You may add your own implementation here */
+                    console.log(result);
+                    navigate("/");
+                },
+                onPending: function (result) {
+                    /* You may add your own implementation here */
+                    console.log(result);
+                    navigate("/");
+                },
+                onError: function (result) {
+                    /* You may add your own implementation here */
+                    navigate(result);
+                },
+                onClose: function () {
+                    /* You may add your own implementation here */
+                    alert("you closed the popup without finishing the payment");
+                },
+            })
+        } catch (error) {
+            console.log(error);
+        }
+    });
+
+    useEffect(() => {
+        //change this to the script source you want to load, for example this is snap.js sandbox env
+        const midtransScriptUrl = "https://app.sandbox.midtrans.com/snap/snap.js";
+        //change this according to your client-key
+        const myMidtransClientKey = "SB-Mid-client-LQsMqwYk9hPkOoEx";
+
+        let scriptTag = document.createElement("script");
+        scriptTag.src = midtransScriptUrl;
+        // optional if you want to set script attribute
+        // for example snap.js have data-client-key attribute
+        scriptTag.setAttribute("data-client-key", myMidtransClientKey);
+
+        document.body.appendChild(scriptTag);
+        return () => {
+            document.body.removeChild(scriptTag);
+        };
+    }, []);
 
     return (
         <div>
@@ -45,9 +97,8 @@ const MyCart = () => {
                         <br/>
                         <hr/>
                         <p className="text-green fw-bold">Total : {convertRupiah.convert(carts?.totalPrice)}</p>
-                        <Button variant="dark" className="float-end w-75">Pay</Button>
+                        <Button variant="dark" className="float-end w-75" onClick={() => handlePay.mutate()}>Pay</Button>
                     </Col>
-
                 </Row>
             </Container>
         </div>

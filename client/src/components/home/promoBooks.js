@@ -5,6 +5,7 @@ import {useQuery} from "react-query";
 import {API} from "../../config/api";
 import {UserContext} from "../../context/userContext";
 import {Link} from "react-router-dom";
+import ButtonCart from "../buttonCart";
 
 const PromoBooks = () => {
 
@@ -14,13 +15,6 @@ const PromoBooks = () => {
         const res = await API.get('/promo-books');
         return res.data.data
     });
-
-    let buttonCart;
-    if (state.isLogin){
-        buttonCart = (
-            <Button variant="dark" style={{width: "100%"}}>Add to Cart</Button>
-        );
-    }
 
     return (
             <Container>
@@ -37,7 +31,7 @@ const PromoBooks = () => {
                                         <span className="text-gray">By. {item?.author}</span>
                                         <p>{item?.desc}</p>
                                         <h5 className="text-green">{convertRupiah.convert(item?.price) }</h5>
-                                        {buttonCart}
+                                        {state.isLogin ? <ButtonCart id={item.id}/> : ''}
                                     </Col>
                                 </Row>
                             </Container>
