@@ -67,7 +67,7 @@ const Nav = () => {
             }
 
 
-            await API.get('/carts').then(res => {
+            API.get('/carts').then(res => {
                 localStorage.setItem('cart', JSON.stringify(res.data.data[0].books));
             });
 
