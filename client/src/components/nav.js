@@ -79,11 +79,11 @@ const Nav = () => {
         } catch (error) {
             const alert = (
                 <Alert variant="danger" className="py-1">
-                    {error.response.data.message}
+                    {error?.response?.data?.message}
                 </Alert>
             );
             setMessage(alert);
-            console.log(error.response.data.message);
+            console.log(error?.response?.data?.message);
         }
     });
 
