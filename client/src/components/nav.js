@@ -19,10 +19,7 @@ const Nav = () => {
     const handleShowLogin = () => setShowLogin(true);
     const handleCloseRegister = () => setShowRegister(false);
     const handleShowRegister = () => setShowRegister(true);
-    const {data : carts} = useQuery('listItemCartssss',async ()=> {
-        const res = await API.get(`/carts`);
-        return res.data.data[0]
-    });
+
     // Login and Register handler
     const [state, dispatch] = useContext(UserContext);
     const initialValues = {
@@ -171,6 +168,10 @@ const Nav = () => {
                     width: "100px"
                 }} onClick={handleShowRegister}>Register</Button></div> );
     }
+    const {data : carts} = useQuery('listItemCartssss',async ()=> {
+        const res = await API.get(`/carts`);
+        return res.data.data[0]
+    });
     return (
             <Navbar>
                 <Container className="my-4">
