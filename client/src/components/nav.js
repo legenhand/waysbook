@@ -140,10 +140,14 @@ const Nav = () => {
 
     // Handle button login show when not logged in
     let avatar;
+    const {data : carts} = useQuery('listItemCartssss',async ()=> {
+        const res = await API.get(`/carts`);
+        return res?.data?.data[0]
+    });
     if (state.isLogin){
             avatar = (<div>
                 <Dropdown>
-                    {state.user.status == "customer" ? <Link to="/cart" className="text-black text-decoration-none"><FontAwesomeIcon icon={faCartShopping} style={{width: "50px", textAlign: "center", fontSize: '40px'}} className="align-middle"/> </Link>  : ''}
+                    {state.user.status == "customer" ? <Link to="/cart" className="text-black text-decoration-none"><FontAwesomeIcon icon={faCartShopping} style={{width: "50px", textAlign: "center", fontSize: '40px'}} className="align-middle"/> {carts?.books?.length} </Link>  : ''}
 
                     <Dropdown.Toggle id="dropdown-basic" variant="none">
                         <img src={state?.user?.profile?.avatar} alt="avatar" style={{width: "50px"}} className="rounded-circle"/>
@@ -168,10 +172,7 @@ const Nav = () => {
                     width: "100px"
                 }} onClick={handleShowRegister}>Register</Button></div> );
     }
-    const {data : carts} = useQuery('listItemCartssss',async ()=> {
-        const res = await API.get(`/carts`);
-        return res.data.data[0]
-    });
+
     return (
             <Navbar>
                 <Container className="my-4">

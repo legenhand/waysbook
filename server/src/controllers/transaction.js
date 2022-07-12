@@ -431,7 +431,7 @@ const sendEmail = async (status, transactionId) => {
               <body>
                 <h2>Product payment :</h2>
                 <ul style="list-style-type:none;">
-                  <li>Name : ${data.books.title}</li>
+                  <li>Name : ${data?.buyer?.title}</li>
                   <li>Total payment: ${convertRupiah.convert(data.price)}</li>
                   <li>Status : <b>${status}</b></li>
                 </ul>
