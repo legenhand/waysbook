@@ -4,7 +4,7 @@ module.exports = {
     development: {
         username: 'root',
         password: 'pisang720',
-        database: 'waysbook_test',
+        database: 'waysbook_test_1',
         host: '127.0.0.1',
         port: 3306,
         dialect: 'mysql',
