@@ -2,15 +2,12 @@ require('dotenv').config();
 
 module.exports = {
     development: {
-        username: 'root',
-        password: 'pisang720',
-        database: 'waysbook_test_1',
-        host: '127.0.0.1',
-        port: 3306,
+        username: process.env.PROD_DB_USERNAME,
+        password: process.env.PROD_DB_PASSWORD,
+        database: process.env.PROD_DB_NAME,
+        host: process.env.PROD_DB_HOSTNAME,
+        port: process.env.PROD_DB_PORT,
         dialect: 'mysql',
-        dialectOptions: {
-            bigNumberStrings: true
-        }
     },
     test: {
         username: process.env.CI_DB_USERNAME,
